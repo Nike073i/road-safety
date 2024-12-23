@@ -1,0 +1,15 @@
+@startuml statistic
+left to right direction
+
+actor "Пользователь" as User
+
+usecase "Посмотреть сводку за предыдущий день" as uc_show_yesterday_resume
+usecase "Показать сводку за указанный период" as uc_show_period_resume
+usecase "Создать отчет в csv" as uc_create_csv_report
+
+uc_show_period_resume <|- uc_create_csv_report
+
+User --> uc_show_yesterday_resume
+User --> uc_show_period_resume
+
+@enduml

@@ -1,0 +1,79 @@
+@startuml articles
+
+left to right direction
+
+' Неавторизованный пользователь
+    actor "Неавторизованный пользователь" as UnknownUser
+
+    usecase "Получить список статей" as uc_guest_get_articles
+    usecase "Посмотреть детали статьи" as uc_guest_get_article_details
+    usecase "Применить фильтр" as uc_guest_get_articles_by_filter
+
+    uc_guest_get_articles <|- uc_guest_get_article_details
+    uc_guest_get_articles <|- uc_guest_get_articles_by_filter
+    
+    UnknownUser --> uc_guest_get_articles
+
+' Пользователь
+    actor "Пользователь" as User
+
+    usecase "Получить список статей" as uc_user_get_articles
+    usecase "Применить фильтр" as uc_user_get_articles_by_filter
+    usecase "Посмотреть детали статьи" as uc_user_get_article_details
+    usecase "Посмотреть комментарии" as uc_user_get_article_comments
+    usecase "Поставить лайк" as uc_like_article
+    usecase "Убрать лайк" as uc_unlike_article
+    usecase "Оставить комментарий" as uc_publish_comment
+    usecase "Ответить на комментарий" as uc_reply_comment
+    usecase "Получать уведомления о публикации статей" as uc_subscribe_new_articles
+    usecase "Отписаться от уведомлений о публикации статей" as uc_unsubscribe_new_articles
+
+    note right of uc_subscribe_new_articles
+        Через бота в "Телеграмм"
+    end note
+
+    note right of uc_unsubscribe_new_articles
+        Через бота в "Телеграмм"
+    end note
+
+    uc_user_get_articles <|- uc_user_get_articles_by_filter
+    uc_user_get_articles <|- uc_user_get_article_details
+    uc_user_get_article_details <|-- uc_like_article
+    uc_user_get_article_details <|-- uc_unlike_article
+    uc_user_get_article_details <|-- uc_user_get_article_comments
+    uc_user_get_article_comments <|-- uc_publish_comment
+    uc_user_get_article_comments <|-- uc_reply_comment
+
+    User --> uc_user_get_articles
+    User --> uc_subscribe_new_articles
+    User --> uc_unsubscribe_new_articles
+
+' Модератор пользователь
+    actor "Модератор" as Moderator
+    
+    usecase "Получить список статей" as uc_moderator_get_articles
+    usecase "Посмотреть детали статьи" as uc_moderator_get_article_details
+    usecase "Создать статью" as uc_create_article
+    usecase "Редактировать статью" as uc_edit_arrticle
+    usecase "Скрыть статью" as uc_hide_article
+    usecase "Опубликовать статью" as uc_publish_article
+    usecase "Удалить статью" as uc_remove_article
+    usecase "Посмотреть комментарии" as uc_moderator_get_article_comments
+    usecase "Разрешить комментирование" as uc_enable_comments
+    usecase "Запретить комментирование" as uc_disable_comments
+    usecase "Удалить комментарий" as uc_remove_comment
+
+    uc_moderator_get_articles <|- uc_moderator_get_article_details
+    uc_moderator_get_article_details <|--uc_edit_arrticle
+    uc_moderator_get_article_details <|--uc_hide_article
+    uc_moderator_get_article_details <|--uc_publish_article
+    uc_moderator_get_article_details <|--uc_remove_article
+    uc_moderator_get_article_details <|--uc_enable_comments
+    uc_moderator_get_article_details <|--uc_disable_comments
+    uc_moderator_get_article_details <|--uc_moderator_get_article_comments
+    uc_moderator_get_article_comments <|--uc_remove_comment
+
+    Moderator --> uc_moderator_get_articles
+    Moderator --> uc_create_article
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml users
+
+left to right direction
+
+' Неавторизованный пользователь
+    actor "Неавторизованный пользователь" as UnknownUser
+
+    usecase "Авторизация" as uc_authorization
+    usecase "Регистрация" as uc_user_authorization
+
+    UnknownUser --> uc_authorization
+    UnknownUser --> uc_user_authorization
+
+' Администратор
+    actor "Админиcтратор" as Admin
+
+    usecase "Добавить роль пользователю" as uc_add_user_role
+    usecase "Удалить роль у пользователя" as uc_remove_user_role
+    usecase "Заблокировать пользователя" as uc_disable_user
+    usecase "Разблокировать пользователя" as uc_enable_user
+
+    Admin --> uc_add_user_role
+    Admin --> uc_remove_user_role
+
+@enduml

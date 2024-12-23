@@ -1,0 +1,22 @@
+@startuml road-accidents
+
+left to right direction
+
+actor "Пользователь" as User
+
+usecase "Получить список ДТП" as uc_get_last_dtp
+usecase "Показать горячие точки" as uc_get_hot_map
+usecase "Применить фильтр" as uc_get_dtp_by_filter
+usecase "Посмотреть детали ДТП" as uc_get_dtp_details
+usecase "Показать похожие" as uc_get_similar
+usecase "Показать соседние " as uc_get_neighboring
+
+uc_get_last_dtp <|-- uc_get_dtp_by_filter
+uc_get_last_dtp <|-- uc_get_dtp_details
+uc_get_dtp_details --> uc_get_similar
+uc_get_dtp_details --> uc_get_neighboring
+
+User --> uc_get_last_dtp
+User --> uc_get_hot_map
+
+@enduml
