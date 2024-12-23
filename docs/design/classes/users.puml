@@ -1,0 +1,42 @@
+@startuml users
+
+' Base
+    interface IHasEvents
+    abstract class DomainEvent
+    abstract class Entity implements IHasEvents
+
+' Users
+    class User extends Entity {
+        +Roles: HashSet<Role>
+        +bool: IsEnable
+        -User()
+        +{static}ErrorOr<User> Create(Guid id, Role[] roles)
+        +ErrorOr<Success> AddRole(Role role)
+        +ErrorOr<Success> RemoveRole(Role role)
+    }
+
+    static class UserConstraints
+    static class UserErrors
+
+    class UserCreatedDomainEvent extends DomainEvent
+    class UserStrippedRoleDomainEvent extends DomainEvent
+    class UserAddedRoleDomainEvent extends DomainEvent
+
+    class Role {
+        +Id: int
+        +Name: string
+        +{static} User: Role 
+        +{static} Moderator: Role 
+        -{static} All: Role[] 
+        +{static} Role FromName(string name)
+        -Role()
+    }
+
+    User ..> UserConstraints
+    User ..> UserErrors
+    User ..> UserCreatedDomainEvent
+    User ..> UserAddedRoleDomainEvent
+    User ..> UserStrippedRoleDomainEvent
+    User o-- Role
+
+@enduml

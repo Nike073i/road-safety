@@ -1,0 +1,181 @@
+@startuml road-accidents
+
+' Base
+    interface IHasEvents
+    abstract class DomainEvent
+    abstract class Entity implements IHasEvents
+
+' RoadAccident
+    class RoadAccident extends Entity {
+        +GibddId: int
+        +OccuredOn: DateTimeOffset
+        +Location: Location
+        +AccidentSeverity? Severity
+        +Address: Address
+        +Details: RoadAccidentDetails
+        -RoadAccident()
+        +{static} RoadAccident Create(int gibddId, DateTimeOffset occuredOn, Location Location, Address address, RoadAccidentDetails details)
+    }
+
+    class RoadAccidentHappenedDomainEvent extends DomainEvent
+
+    class Address {
+        +string City
+        +string Street
+        +int House
+    }
+
+    class Location {
+        +Latituide: double
+        +Longitude: double
+    }
+
+    class AccidentSeverity {
+        +Name: string
+        +{static} Slight: AccidentSeverity 
+        +{static} Serious: AccidentSeverity 
+        +{static} Fatal: AccidentSeverity 
+        -{static} All: AccidentSeverity[] 
+        +{static} AccidentSeverity FromName(string name)
+        -AccidentSeverity()
+    }
+
+    class RoadAccidentDetails {
+        +Light Light
+        +Weather Weather
+        +Category Category
+        +Vehicles Vehicle[]
+        +Participant Participant[]
+        +DeadCount int
+        +RoadCondition RoadCondition
+    }
+
+    class Vehicle {
+        +Number: int
+        +Year: int
+        +Brand: string
+        +Model: string
+        +Participants: Participant[]
+    }
+
+    class RoadCondition {
+        +Name: string
+        +{static} Dry: RoadCondition
+        +{static} Wet: RoadCondition 
+        +{static} Icy: RoadCondition 
+        +{static} SnowCovered: RoadCondition 
+        +{static} Other: RoadCondition 
+        -{static} All: RoadCondition[]
+        +{static} RoadCondition FromName(string name)
+        -RoadCondition()
+    }
+
+    class Participant {
+        +Role ParticipantRole
+        +Age int
+        +Gender Gender
+        +Status InjuryStatus
+    }
+
+    class ParticipantRole {
+        +Name: string
+        +{static} Driver: ParticipantRole
+        +{static} Passenger: ParticipantRole 
+        +{static} Pedestrian: ParticipantRole 
+        +{static} Cyclist: ParticipantRole 
+        -{static} All: ParticipantRole[]
+        +{static} ParticipantRole FromName(string name)
+        -ParticipantRole()
+    }
+
+    class Gender {
+        +Name: string
+        +{static} Male: Gender
+        +{static} Female: Gender 
+        -{static} All: Gender[]
+        +{static} Gender FromName(string name)
+        -Gender()
+    }
+
+    class InjuryStatus {
+        +Name: string
+        +{static} Uninjured: InjuryStatus
+        +{static} Minor: InjuryStatus 
+        +{static} Serious: InjuryStatus 
+        +{static} Fatal: InjuryStatus 
+        -{static} All: InjuryStatus[]
+        +{static} InjuryStatus FromName(string name)
+        -InjuryStatus()
+    }
+
+    class Light {
+        +Name: string
+        +{static} Daylight: Light
+        +{static} DarknessWithLights: Light 
+        +{static} Twilight: Light 
+        +{static} DarknessNoLights: Light 
+        -{static} All: Light[]
+        +{static} Light FromName(string name)
+        -Light()
+    }
+
+    class Weather {
+        +Wind Wind
+        +Visibility Visibility
+    }
+
+    class Wind {
+        +Name: string
+        +{static} High: Wind
+        +{static} Low: Wind 
+        -{static} All: Wind[]
+        +{static} Wind FromName(string name)
+        -Wind()
+    }
+
+    class Visibility {
+        +Name: string
+        +{static} Clear: Visibility 
+        +{static} Rain: Visibility 
+        +{static} Snow: Visibility 
+        +{static} Fog: Visibility 
+        -{static} All: Visibility[] 
+        +{static} Visibility FromName(string name)
+        -Visibility()
+    }
+
+    class Category {
+        +Name: string
+        +{static} Collision: Category 
+        +{static} PedestrianCollision: Category 
+        +{static} AnimalCollision: Category 
+        +{static} FixedObjectCollision: Category 
+        +{static} Rollover: Category 
+        +{static} NonCollision: Category 
+        +{static} Other: Category 
+        -{static} All: Category[] 
+        +{static} Category FromName(string name)
+        -Category()
+    }
+
+    RoadAccident ..> RoadAccidentHappenedDomainEvent
+    RoadAccident o-- AccidentSeverity
+    RoadAccident o-- Location
+    RoadAccident o-- Address
+    RoadAccident o-- RoadAccidentDetails
+
+    RoadAccidentDetails o-- Light
+    RoadAccidentDetails o-- Weather
+    RoadAccidentDetails o-- Category
+    RoadAccidentDetails o-- Vehicle
+    RoadAccidentDetails o-- Participant
+    RoadAccidentDetails o-- RoadCondition
+
+    Weather o-- Wind
+    Weather o-- Visibility
+
+    Participant o-- Gender
+    Participant o-- InjuryStatus
+    Participant o-- ParticipantRole
+
+@enduml
