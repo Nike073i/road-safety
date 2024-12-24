@@ -20,9 +20,9 @@
     class RoadAccidentHappenedDomainEvent extends DomainEvent
 
     class Address {
-        +string City
-        +string Street
-        +int House
+        +string: City
+        +string: Street
+        +int: House
     }
 
     class Location {
@@ -41,13 +41,13 @@
     }
 
     class RoadAccidentDetails {
-        +Light Light
-        +Weather Weather
-        +Category Category
-        +Vehicles Vehicle[]
-        +Participant Participant[]
-        +DeadCount int
-        +RoadCondition RoadCondition
+        +Light: Light
+        +Weather: Weather
+        +Category: Category
+        +Vehicles: Vehicle[]
+        +Participant: Participant[]
+        +DeadCount: int
+        +RoadCondition: RoadCondition
     }
 
     class Vehicle {
@@ -71,10 +71,11 @@
     }
 
     class Participant {
-        +Role ParticipantRole
-        +Age int
-        +Gender Gender
-        +Status InjuryStatus
+        +Number: int
+        +Role: ParticipantRole
+        +Age: int
+        +Gender: Gender
+        +Status: InjuryStatus
     }
 
     class ParticipantRole {
@@ -120,8 +121,8 @@
     }
 
     class Weather {
-        +Wind Wind
-        +Visibility Visibility
+        +Wind: Wind
+        +Visibility: Visibility
     }
 
     class Wind {
