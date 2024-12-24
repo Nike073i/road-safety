@@ -20,9 +20,9 @@
     class RoadAccidentHappenedDomainEvent extends DomainEvent
 
     class Address {
-        +string: City
-        +string: Street
-        +int: House
+        +City: string 
+        +Street: string 
+        +House: int 
     }
 
     class Location {
