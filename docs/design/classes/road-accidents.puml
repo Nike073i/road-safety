@@ -1,23 +1,20 @@
 @startuml road-accidents
 
+' Comment: В модуле не используется работа с доменными событиями. Интеграционные события по необходимости будут опубликованы в Application слое
+
 ' Base
-    interface IHasEvents
-    abstract class DomainEvent
-    abstract class Entity implements IHasEvents
+    abstract class Entity
 
 ' RoadAccident
     class RoadAccident extends Entity {
         +GibddId: int
         +OccuredOn: DateTimeOffset
         +Location: Location
-        +AccidentSeverity? Severity
         +Address: Address
         +Details: RoadAccidentDetails
         -RoadAccident()
         +{static} RoadAccident Create(int gibddId, DateTimeOffset occuredOn, Location Location, Address address, RoadAccidentDetails details)
     }
-
-    class RoadAccidentHappenedDomainEvent extends DomainEvent
 
     class Address {
         +City: string 
@@ -159,7 +156,6 @@
         -Category()
     }
 
-    RoadAccident ..> RoadAccidentHappenedDomainEvent
     RoadAccident o-- AccidentSeverity
     RoadAccident o-- Location
     RoadAccident o-- Address
