@@ -62,7 +62,7 @@ left to right direction
     usecase "Посмотреть комментарии" as uc_moderator_get_article_comments
     usecase "Разрешить комментирование" as uc_enable_comments
     usecase "Запретить комментирование" as uc_disable_comments
-    usecase "Удалить комментарий" as uc_remove_comment
+    usecase "Скрыть комментарий" as uc_hide_comment
 
     uc_moderator_get_articles <|- uc_moderator_get_article_details
     uc_moderator_get_article_details <|--uc_edit_arrticle
@@ -73,7 +73,7 @@ left to right direction
     uc_moderator_get_article_details <|--uc_enable_comments
     uc_moderator_get_article_details <|--uc_disable_comments
     uc_moderator_get_article_details <|--uc_moderator_get_article_comments
-    uc_moderator_get_article_comments <|--uc_remove_comment
+    uc_moderator_get_article_comments <|--uc_hide_comment
 
     Moderator --> uc_moderator_get_articles
     Moderator --> uc_create_article
