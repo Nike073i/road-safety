@@ -1,9 +1,9 @@
 @startuml users
 
+' Comment: В модуле не используется работа с доменными событиями. Интеграционные события по необходимости будут опубликованы в Application слое
+
 ' Base
-    interface IHasEvents
-    abstract class DomainEvent
-    abstract class Entity implements IHasEvents
+    abstract class Entity
 
 ' Users
     class User extends Entity {
@@ -18,10 +18,6 @@
     static class UserConstraints
     static class UserErrors
 
-    class UserCreatedDomainEvent extends DomainEvent
-    class UserStrippedRoleDomainEvent extends DomainEvent
-    class UserAddedRoleDomainEvent extends DomainEvent
-
     class Role {
         +Id: int
         +Name: string
@@ -34,9 +30,6 @@
 
     User ..> UserConstraints
     User ..> UserErrors
-    User ..> UserCreatedDomainEvent
-    User ..> UserAddedRoleDomainEvent
-    User ..> UserStrippedRoleDomainEvent
     User o-- Role
 
 @enduml
