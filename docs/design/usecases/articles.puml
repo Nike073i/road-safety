@@ -57,6 +57,7 @@ left to right direction
     usecase "Редактировать статью" as uc_edit_arrticle
     usecase "Скрыть статью" as uc_hide_article
     usecase "Опубликовать статью" as uc_publish_article
+    usecase "Опубликовать статью в указанное время" as uc_publish_article_at_time
     usecase "Удалить статью" as uc_remove_article
     usecase "Посмотреть комментарии" as uc_moderator_get_article_comments
     usecase "Разрешить комментирование" as uc_enable_comments
@@ -67,6 +68,7 @@ left to right direction
     uc_moderator_get_article_details <|--uc_edit_arrticle
     uc_moderator_get_article_details <|--uc_hide_article
     uc_moderator_get_article_details <|--uc_publish_article
+    uc_moderator_get_article_details <|--uc_publish_article_at_time
     uc_moderator_get_article_details <|--uc_remove_article
     uc_moderator_get_article_details <|--uc_enable_comments
     uc_moderator_get_article_details <|--uc_disable_comments
