@@ -1,0 +1,8 @@
+@startuml notifications
+
+class TelegramClient {
+    +UserId: long
+    +IsActive: bool
+}
+
+@enduml
