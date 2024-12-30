@@ -1,0 +1,12 @@
+@startuml statistic
+
+' DailySummary
+    class DailySummary {
+        +Date: DateTimeOffset
+        +RegionNumber: int
+        +DtpCount: int
+        +DeadCount: int
+        +InjuryCount: int
+    }
+
+@enduml
