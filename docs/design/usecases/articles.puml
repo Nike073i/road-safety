@@ -25,6 +25,7 @@ left to right direction
     usecase "Убрать лайк" as uc_unlike_article
     usecase "Оставить комментарий" as uc_publish_comment
     usecase "Ответить на комментарий" as uc_reply_comment
+    usecase "Изменить комментарий" as uc_edit_comment
     usecase "Получать уведомления о публикации статей" as uc_subscribe_new_articles
     usecase "Отписаться от уведомлений о публикации статей" as uc_unsubscribe_new_articles
 
@@ -36,6 +37,10 @@ left to right direction
         Через бота в "Телеграмм"
     end note
 
+    note right of uc_edit_comment
+        Не позже некоторого времени после публикации
+    end note
+
     uc_user_get_articles <|- uc_user_get_articles_by_filter
     uc_user_get_articles <|- uc_user_get_article_details
     uc_user_get_article_details <|-- uc_like_article
@@ -43,6 +48,7 @@ left to right direction
     uc_user_get_article_details <|-- uc_user_get_article_comments
     uc_user_get_article_comments <|-- uc_publish_comment
     uc_user_get_article_comments <|-- uc_reply_comment
+    uc_user_get_article_comments <|-- uc_edit_comment
 
     User --> uc_user_get_articles
     User --> uc_subscribe_new_articles
