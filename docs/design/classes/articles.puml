@@ -1,0 +1,119 @@
+@startuml articles
+
+' Base
+    abstract class DomainEvent
+    interface IDateTimeProvider
+    abstract class Entity
+    abstract class Rule<T>
+
+' Articles
+
+    class Article extends Entity {
+        +AuthorId: Guid
+        +CreatedAt: DateTimeOffset
+        +Visibility: Visibility
+        +IsArchived: bool
+        +RowVersion: uint
+        +IsEnableCommenting: bool
+        -Article()
+        +{static} ErrorOr<ArticleCreatedDomainEvent> Create(Guid authorId, IDateTimeProvider dateTimeProvider, string title, string? subtitle, string? image, string[] tags)
+        +Article(ArticleCreatedDomainEvent event)
+        +ArticleVisibilityChangedDomainEvent ToggleVisibility()
+        +ErrorOr<ArticleArhivedDomainEvent> Archive()
+        +void Apply(ArticleVisibilityChangedDomainEvent event)
+        +void Apply(ArticleArhivedDomainEvent event)
+    }
+
+    class ArticleCreatedDomainEvent extends DomainEvent
+    class ArticleVisibilityChangedDomainEvent extends DomainEvent
+    class ArticleArhivedDomainEvent extends DomainEvent
+
+    class ArticleInfo extends Entity {
+        +Title: string
+        +Subtitle: string?
+        +Image: string?
+        +Tags: string[]
+        -ArticleInfo()
+        +ErrorOr<ArticleInfoChangedDomainEvent> Update(string title, string? subtitle, string? image, string[] tags)
+        +Article(ArticleCreatedDomainEvent event)
+        +void Apply(ArticleInfoChangedDomainEvent event)
+    }
+    class ArticleInfoChangedDomainEvent extends DomainEvent
+
+    class ArticleDraft extends Entity {
+        +Blocks: ArticleBlock[]
+        +ErrorOr<BlockInsertDomainEvent> InsertBlockAfter(int position, ArticleBlock block)
+        +ErrorOr<BlockReplacedDomainEvent> MoveBlockBefore(int oldPosition, int newPosition)
+        +ErrorOr<BlockUpdatedDomainEvent> UpdateBlock(int position, ArticleBlock block)
+        +ErrorOr<BlockRemovedDomainEvent> RemoveBlock(int position)
+        +ArticleDraft(ArticleCreatedDomainEvent event)
+        +void Apply(BlockInsertDomainEvent event)
+        +void Apply(BlockReplacedDomainEvent event)
+        +void Apply(BlockUpdatedDomainEvent event)
+        +void Apply(BlockRemovedDomainEvent event)
+    }
+
+    class BlockInsertDomainEvent extends DomainEvent
+    class BlockReplacedDomainEvent extends DomainEvent
+    class BlockUpdatedDomainEvent extends DomainEvent
+    class BlockRemovedDomainEvent extends DomainEvent
+
+    class ArticleContent extends Entity {
+        +IsArchived: bool
+        +Draft: ArticleDraft
+        +Info: ArticleInfo
+        +RowVersion: uint
+        +LastEditedAt: DateTimeOffset?
+        +ErrorOr<ArticleChangesApliedDomainEvent> ApplyChanges(List<DomainEvent> events)
+        +void Apply(ArticleChangesApliedDomainEvent event)
+    }
+
+    class Visibility {
+        +Name: string
+        +{static} Visible: Visibility
+        +{static} Hidden: Visibility
+        -{static} All: Visibility[]
+        +{static} Visibility FromName(string name)
+        -Visibility()
+    }
+
+    abstract class ArticleBlock
+
+    class ArticleImageBlock extends ArticleBlock {
+        title: string;
+        src: string;
+    }
+
+    class ArticleTextBlock extends ArticleBlock {
+        paragraphs: string[];
+        title?: string;
+    }
+
+    class ArticleCommentingService {
+        -Article: Article
+        -DateTimeProvider: IDateTimeProvider
+        +ArticleCommentingService(Article article, IDateTimeProvider dateTimeProvider)
+        +ErrorOr<CommentWasAddedDomainEvent> AddComment(Guid userId, string text)
+        +ErrorOr<CommentWasEditedDomainEvent> EditComment(Comment comment, Guid userId, string newText, Rule<Comment> commentEditingRule)
+        +ErrorOr<CommentReplyWasCreatedDomainEvent> ReplyComment(Comment originalComment, Guid userId, string text)
+    }
+    class EditingCommentAfterPublishingNoLaterThanRule : Rule<Comment>
+    {
+        +NoLaterThan: DateTimeOffset
+        +EditingCommentAfterPublishingNoLaterThanRule(DateTimeOffset noLaterThan)
+        +bool: IsSatisfied(Comment comment);
+    }
+
+    class Comment extends Entity {
+        +AuthorId: Guid
+        +ArticleId: Guid
+        +Text: string
+        +ReplyCommentId: Guid?
+        +DateOfPublish: DateTimeOffset
+        +DateOfLastEdit: DateTimeOffset?
+        +Comment(CommentWasAddedDomainEvent event)
+        +Comment(CommentReplyWasCreatedDomainEvent event)
+        +void Apply(CommentWasEditedDomainEvent event)
+    }
+
+@enduml
