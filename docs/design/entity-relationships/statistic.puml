@@ -1,0 +1,12 @@
+@startuml statistic
+left to right direction
+
+entity daily_summary {
+    *date: timestamp with time zone
+    *region_number: integer
+    *dtp_count: integer
+    *dead_count: integer
+    *injury_count: integer
+}
+
+@enduml
