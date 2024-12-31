@@ -1,0 +1,84 @@
+@startuml road-accidents
+left to right direction
+
+entity road_accident {
+    *id: uuid
+    *gibdd_id: integer
+    *occured_on: timestamp with time zone
+    *location: geography(POINT,4326)
+    *address: Address
+    *wind: Wind
+    *visibility: Visibility
+    *light: Light
+    *category: Category
+    *road_condition: RoadCondition
+    *dead_count: integer
+    *vehicles: jsonb
+    *participant: jsonb
+}
+
+class Address
+{
+	+city: text
+	+street: text
+    +house: integer
+}
+
+enum Wind {
+    High
+    Low
+}
+
+enum Visibility {
+    Clear
+    Rain
+    Snow
+    Fog
+}
+
+enum Light {
+    Daylight
+    DarknessWithLights
+    Twilight
+    DarknessNoLights
+}
+
+enum Category {
+    Collision
+    PedestrianCollision
+    AnimalCollision
+    FixedObjectCollision
+    Rollover
+    NonCollision
+    Other
+}
+
+enum RoadCondition {
+    Dry
+    Wet
+    Icy
+    SnowCovered
+    Other
+}
+
+entity road_accident_severity {
+	*road_accident_id: integer
+    *severity: AccidentSeverity
+}
+
+enum AccidentSeverity {
+    Slight
+    Serious
+    Fatal
+}
+
+road_accident |o..|| road_accident_severity
+road_accident --> Wind
+road_accident --> Visibility
+road_accident --> Address
+road_accident --> Category
+road_accident --> Light
+road_accident --> RoadCondition
+road_accident_severity --> AccidentSeverity
+
+@enduml
