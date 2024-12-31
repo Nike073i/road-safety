@@ -1,0 +1,9 @@
+@startuml notifications
+left to right direction
+
+entity telegram_clients {
+    *user_id: bigint
+    *is_active: boolean
+}
+
+@enduml
