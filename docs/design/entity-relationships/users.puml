@@ -1,0 +1,36 @@
+@startuml users
+left to right direction
+
+entity user {
+    *id: uuid
+    *is_enable: boolean
+}
+
+entity role {
+    *id: integer
+    *name: text
+}
+
+entity user_roles {
+    *user_id: uuid
+    *role_id: integer
+}
+
+entity permission {
+    *id: integer
+    *name: text
+}
+
+entity role_permissions {
+    *role_id: integer
+    *permission_id: integer
+}
+
+user }|..|| user_roles
+user_roles ||..o{ role
+
+role }o..|| role_permissions
+role_permissions ||..o{ permission
+
+
+@enduml
