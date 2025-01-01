@@ -1,0 +1,47 @@
+@startuml articles
+left to right direction
+
+entity article {
+    *id: uuid
+    *author_id: uuid
+    *created_at: timestamp with time zone
+    *visibility: Visibility
+    *comments_included: boolean
+    last_edited_at: timestamp with time zone
+}
+
+enum Visibility {
+    Visible
+    Hidden
+}
+
+entity article_info {
+    *article_id: uuid
+    *title: text
+    subtitle: text
+    image: text
+    tags: text[]
+}
+
+entity article_draft {
+    *article_id: uuid
+    *blocks: jsonb
+}
+
+entity comment {
+    *author_id: uuid
+    *article_id: uuid
+    *content: text
+    reply_comment_id: uuid
+    *published_at: timestamp with time zone
+    last_edited_at: timestamp with time zone
+}
+
+article ||..|| article_info
+article ||..|| article_draft
+article --> Visibility
+
+article }o..|| comment
+comment |o..|| comment : reply
+
+@enduml
