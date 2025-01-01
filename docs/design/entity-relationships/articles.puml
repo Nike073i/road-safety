@@ -29,6 +29,7 @@ entity article_draft {
 }
 
 entity comment {
+    *id: uuid
     *author_id: uuid
     *article_id: uuid
     *content: text
