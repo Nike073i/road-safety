@@ -19,7 +19,7 @@
     static class UserErrors
 
     class Role {
-        +Id: int
+        +Code: int
         +Name: string
         +{static} User: Role 
         +{static} Moderator: Role 
