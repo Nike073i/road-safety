@@ -7,8 +7,8 @@ from config import Configuration
 
 def main(env_path: str = None, **kwargs):
     config = Configuration()
-    config.add_args(kwargs)
     config.add_env(env_path)
+    config.add_args(kwargs)
 
     factory = LoggerFactory(config.get_log_name())
     logger = factory.create_logger()
@@ -28,6 +28,7 @@ def main(env_path: str = None, **kwargs):
         sys.exit(1)
 
     try:
+        logger.info(f"Местоположение скриптов - {scripts}")
         backend = get_backend(db_url)
 
         migrations = read_migrations(scripts)
