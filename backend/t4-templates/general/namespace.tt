@@ -1,0 +1,20 @@
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#
+    string namespaceResult = "DefaultNamespace";
+    // Регулярка на путь **/backend/**/RoadSafety.*/**. В группу входит RoadSafety.*/**
+    string pattern = @"(?:/|\\)backend(?:/|\\).*?(?:/|\\)(RoadSafety(?:\.[\w]+)*(?:/|\\)?.*)";
+
+    var currentDir = Directory.GetCurrentDirectory();
+
+    var match = Regex.Match(currentDir, pattern);
+    if (match.Success)
+    {
+        string matchedPath = match.Groups[1].Value;
+        namespaceResult = matchedPath
+            .Trim('/', '\\')
+            .Replace('/', '.')
+            .Replace('-', '.')
+            .Replace('\\', '.');
+    }
+#>

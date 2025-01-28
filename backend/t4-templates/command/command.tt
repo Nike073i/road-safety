@@ -1,0 +1,28 @@
+<#@ template language="C#" #>
+<#@ parameter type="System.String" name="Name" #>
+<#@ output extension=".cs" #>
+<#@ include file="../general/namespace.tt" #>
+using ErrorOr;
+using FluentValidation;
+using RoadSafety.BuildingBlocks.CommandStack.Cqrs;
+
+namespace <#= namespaceResult #>
+{
+    public record <#= Name #>Command : ICommand;
+
+    public class <#= Name #>CommandValidator : AbstractValidator<<#= Name #>Command>
+    {
+        public <#= Name #>CommandValidator()
+        {
+
+        }
+    }
+
+    public class <#= Name #>CommandHandler : ICommandHandler<<#= Name #>Command>
+    {
+        public Task<ErrorOr<Success>> Handle(
+            <#= Name #>Command request,
+            CancellationToken cancellationToken
+        ) => throw new NotImplementedException();
+    }
+}

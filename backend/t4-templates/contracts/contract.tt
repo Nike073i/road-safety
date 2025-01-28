@@ -1,0 +1,23 @@
+<#@ template language="C#" #>
+<#@ parameter type="System.String" name="Name" #>
+<#@ output extension=".cs" #>
+<#@ include file="../general/namespace.tt" #>
+using FluentValidation;
+
+namespace <#= namespaceResult #>
+{
+	public record <#= Name #>Request(
+		// Properties
+	);
+	public record <#= Name #>Response(
+		// Properties
+	);
+
+	public class <#= Name #>RequestValidator : AbstractValidator<<#= Name #>Request>
+	{
+		public <#= Name #>RequestValidator()
+		{
+			// RuleFor(x => x.Property);
+		}
+	}
+}

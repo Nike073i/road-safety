@@ -1,0 +1,37 @@
+<#@ template language="C#" #>
+<#@ parameter type="System.String" name="Name" #>
+<#@ output extension=".cs" #>
+<#@ include file="../general/namespace.tt" #>
+using ErrorOr;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using RoadSafety.BuildingBlocks.Api.Endpoints;
+using Microsoft.FeatureManagement;
+using RoadSafety.BuildingBlocks.Api.FeatureManagement;
+
+namespace <#= namespaceResult #>
+{
+	public class <#= Name #>Endpoint
+	{
+		public static Task<IResult> Handle(
+			[FromBody] <#= Name #>Request input,
+			ISender sender,
+			CancellationToken cancellationToken
+		) =>
+			input
+				.ToErrorOr()
+				.Then(input => new <#= Name #>Command(
+                    // Parameters
+                ))
+				.ThenAsync(req => sender.Send(req, cancellationToken))
+				.MatchResult(value =>
+                    TypedResults.Ok(new <#= Name #>Response(value))
+				);
+	}
+
+	public class <#= Name #>FeatureFilter(IFeatureManager featureManager)
+		: FeatureFilterBase(featureManager)
+	{
+		protected override string FeatureName => "<#= Name #>";
+	}
+}

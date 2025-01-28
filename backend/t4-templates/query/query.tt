@@ -1,0 +1,45 @@
+<#@ template language="C#" #>
+<#@ parameter type="System.String" name="Name" #>
+<#@ output extension=".cs" #>
+<#@ include file="../general/namespace.tt" #>
+using FluentValidation;
+using RoadSafety.BuildingBlocks.QueryStack.Cache;
+using RoadSafety.BuildingBlocks.QueryStack.Cqrs;
+
+namespace <#= namespaceResult #>
+{
+    public class ViewModel
+    {
+        // Properties
+    }
+    
+    public record <#= Name #>Query : CacheableQuery<ViewModel?>;
+
+    public class <#= Name #>QueryValidator : AbstractValidator<<#= Name #>Query>
+    {
+        public <#= Name #>QueryValidator()
+        {
+
+        }
+    }
+
+	public interface I<#= Name #>DataSource
+	{
+		Task<ViewModel?> GetData(
+            // Parameters
+			CancellationToken cancellationToken = default
+		);
+	}
+    public class <#= Name #>QueryHandler(I<#= Name #>DataSource dataSource) : IQueryHandler<<#= Name #>Query, ViewModel>
+    {
+        private readonly I<#= Name #>DataSource _dataSource = dataSource;
+
+        public Task<ViewModel> Handle(
+            <#= Name #>Query request,
+            CancellationToken cancellationToken
+        ) => _dataSource.GetData(
+            // Parameters, 
+            cancellationToken
+        );
+    }
+}
