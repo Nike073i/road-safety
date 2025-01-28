@@ -1,0 +1,13 @@
+services:
+  keycloak:
+    build: 
+      dockerfile: ../keycloak/Dockerfile
+    container_name: RoadSafety.SSO
+
+  postgres:
+    image: postgres
+    container_name: RoadSafety.Database
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: RoadSafety.Broker
