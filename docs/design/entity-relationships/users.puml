@@ -3,27 +3,26 @@ left to right direction
 
 entity user {
     *id: uuid
-    *is_enable: boolean
 }
 
 entity role {
-    *id: integer
+    *code: integer
     *name: text
 }
 
 entity user_roles {
     *user_id: uuid
-    *role_id: integer
+    *role_code: integer
 }
 
 entity permission {
-    *id: integer
+    *code: integer
     *name: text
 }
 
 entity role_permissions {
-    *role_id: integer
-    *permission_id: integer
+    *role_code: integer
+    *permission_code: integer
 }
 
 user }|..|| user_roles

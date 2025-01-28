@@ -8,13 +8,13 @@
 ' Users
     class User extends Entity {
         +Roles: HashSet<Role>
-        +bool: IsEnable
         -User()
-        +{static}ErrorOr<User> Create(Guid id, Role[] roles)
+        +{static}ErrorOr<User> Create(Guid id, ICollection<Role> roles)
         +ErrorOr<Success> AddRole(Role role)
         +ErrorOr<Success> RemoveRole(Role role)
     }
 
+    static class UserMessages
     static class UserConstraints
     static class UserErrors
 
@@ -23,11 +23,12 @@
         +Name: string
         +{static} User: Role 
         +{static} Moderator: Role 
-        -{static} All: Role[] 
+        -{static} All: IReadOnlyCollection<Role> 
         +{static} Role FromName(string name)
         -Role()
     }
 
+    User ..> UserMessages
     User ..> UserConstraints
     User ..> UserErrors
     User o-- Role
