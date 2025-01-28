@@ -1,0 +1,19 @@
+syntax = "proto3";
+package RoadSafety.Users.Contracts.System.Users.GetUserPermissions;
+option csharp_namespace = "RoadSafety.Users.Contracts.System.Users.GetUserPermissions";
+
+service Service {
+    rpc Handle(Request) returns (Response);
+}
+
+message Request { }
+
+message Response {
+    string user_id = 1;
+    repeated Permission permissions = 2;
+}
+
+message Permission {
+    int32 code = 1;
+    string name = 2;
+}
