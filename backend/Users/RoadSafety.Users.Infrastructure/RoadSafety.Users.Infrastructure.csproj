@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RoadSafety.Users.CommandStack\RoadSafety.Users.CommandStack.csproj" />
+    <ProjectReference Include="..\RoadSafety.Users.QueryStack\RoadSafety.Users.QueryStack.csproj" />
+    <ProjectReference Include="..\RoadSafety.Users.Contracts\RoadSafety.Users.Contracts.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\RoadSafety.BuildingBlocks.Infrastructure\RoadSafety.BuildingBlocks.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
