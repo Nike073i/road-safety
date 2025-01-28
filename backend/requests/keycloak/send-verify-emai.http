@@ -1,0 +1,14 @@
+# auth-request
+# @name kk_admin_auth
+POST {{keycloak-api}}/realms/road-safety/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{kk_admin_client_id}}&client_secret={{kk_admin_client_secret}}&scope=openid email&grant_type=client_credentials
+
+###
+# send email verify request
+@userId=3234d2af-bb6c-4007-888c-03a961315502
+@endpoint={{keycloak-api}}/admin/realms/road-safety/users/{{userId}}/execute-actions-email
+
+PUT {{endpoint}}
+Authorization: Bearer {{kk_admin_auth.response.body.access_token}}

@@ -1,0 +1,17 @@
+@endpoint = {{users-api}}/users/register
+@firstname=Nikita
+@lastname=Filippov
+@username=nike073i
+@email=nike073i@mail.ru
+@password=mypassword
+
+POST {{endpoint}}
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "firstname": "{{firstname}}",
+    "lastname": "{{lastname}}",
+    "username": "{{username}}",
+    "password": "{{password}}"
+}

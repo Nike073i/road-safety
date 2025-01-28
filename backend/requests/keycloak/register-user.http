@@ -1,0 +1,60 @@
+# auth-request
+# @name kk_admin_auth
+POST {{keycloak-api}}/realms/road-safety/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{kk_admin_client_id}}&client_secret={{kk_admin_client_secret}}&scope=openid email&grant_type=client_credentials
+
+###
+# create-request
+@endpoint={{keycloak-api}}/admin/realms/road-safety/users
+@firstname=Nikita
+@lastname=Filippov
+@username=nike073i
+@email=nike073i@mail.ru
+@password=mypassword
+
+# @name create
+POST {{endpoint}}
+Content-Type: application/json
+Authorization: Bearer {{kk_admin_auth.response.body.access_token}}
+
+{
+    "email": "{{email}}",
+    "firstName": "{{firstname}}",
+    "lastName": "{{lastname}}",
+    "username": "{{username}}",
+    "requiredActions": [
+        "VERIFY_EMAIL"
+    ],
+    "enabled": true,
+    "credentials": [
+        {
+            "temporary": false,
+            "type": "password",
+            "value": "{{password}}"
+        }
+    ]
+}
+
+###
+# @name create-with-email-verified
+POST {{endpoint}}
+Content-Type: application/json
+Authorization: Bearer {{kk_admin_auth.response.body.access_token}}
+
+{
+    "email": "{{email}}",
+    "firstName": "{{firstname}}",
+    "lastName": "{{lastname}}",
+    "username": "{{username}}",
+    "enabled": true,
+    "emailVerified": true,
+    "credentials": [
+        {
+            "temporary": false,
+            "type": "password",
+            "value": "{{password}}"
+        }
+    ]
+}

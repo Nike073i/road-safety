@@ -1,0 +1,15 @@
+{
+    "plantuml.server": "https://www.plantuml.com/plantuml",
+    "plantuml.render": "PlantUMLServer",
+    "rest-client.environmentVariables": {
+        "$shared": {
+            "kk_admin_client_id": "road-safety-users-admin-client",
+            "kk_admin_client_secret": "jZPDyVN885TwrO1WP1jEWs7tvm2knxda",
+            "kk_ui_client_id": "road-safety-ui-client"
+        },
+        "dev": {
+            "users-api": "http://localhost:5192",
+            "keycloak-api": "http://localhost:8080"
+        }
+    } 
+}
