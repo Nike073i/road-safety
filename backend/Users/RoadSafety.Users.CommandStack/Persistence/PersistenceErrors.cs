@@ -7,7 +7,7 @@ namespace RoadSafety.Users.CommandStack.Persistence
 	{
 		public static readonly Error UserAlreadyExistsError = Error.Conflict(
 			code: CreateCode(),
-			description: PersestenceMessages.UserAlreadyExists
+			description: PersistenceMessages.UserAlreadyExists
 		);
 
 		private static string CreateCode([CallerMemberName] string? propertyName = null) =>
