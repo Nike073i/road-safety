@@ -9,6 +9,7 @@
         },
         "dev": {
             "users-api": "http://localhost:5192",
+            "articles-api": "http://localhost:5193",
             "keycloak-api": "http://localhost:8080"
         }
     } 

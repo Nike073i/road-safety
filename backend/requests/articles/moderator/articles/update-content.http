@@ -1,0 +1,19 @@
+###
+# auth-request
+# @name user_auth
+@client_id={{kk_ui_client_id}}
+@username=nike073i
+@password=mypassword
+POST {{keycloak-api}}/realms/road-safety/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{client_id}}&scope=openid email&username={{username}}&password={{password}}&grant_type=password
+
+###
+# apply-request
+@endpoint={{articles-api}}/moderator/articles/{{articleId}}/update
+@articleId=5ff5ee7d-aaaf-4614-bd82-fb22de83ffb2
+
+POST {{endpoint}}
+Content-Type: application/json
+Authorization: Bearer {{user_auth.response.body.access_token}}

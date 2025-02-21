@@ -1,0 +1,4 @@
+@article_id = d522e5f6-392c-4b2b-8d04-e15dd8118a78
+@endpoint = {{articles-api}}/articles/{{article_id}}
+
+GET {{endpoint}}

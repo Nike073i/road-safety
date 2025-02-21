@@ -1,0 +1,29 @@
+###
+# auth-request
+# @name user_auth
+@client_id={{kk_ui_client_id}}
+@username=nike073i
+@password=mypassword
+POST {{keycloak-api}}/realms/road-safety/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{client_id}}&scope=openid email&username={{username}}&password={{password}}&grant_type=password
+
+###
+# create-request
+@endpoint={{articles-api}}/moderator/articles
+@title=Заголовок
+@subtitle=Подзаголовок
+@image=https://vk.com/fake-resource-img.jpg
+@tags=["tag1", "tag2"]
+
+POST {{endpoint}}
+Content-Type: application/json
+Authorization: Bearer {{user_auth.response.body.access_token}}
+
+{
+    "title": "{{title}}",
+    "subtitle": "{{subtitle}}",
+    "image": "{{image}}",
+    "tags": {{tags}}
+}
