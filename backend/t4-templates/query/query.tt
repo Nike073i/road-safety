@@ -8,12 +8,12 @@ using RoadSafety.BuildingBlocks.QueryStack.Cqrs;
 
 namespace <#= namespaceResult #>
 {
-    public class ViewModel
+    public class <#= Name #>ViewModel
     {
         // Properties
     }
     
-    public record <#= Name #>Query : CacheableQuery<ViewModel?>;
+    public record <#= Name #>Query : CacheableQuery<<#= Name #>ViewModel?>;
 
     public class <#= Name #>QueryValidator : AbstractValidator<<#= Name #>Query>
     {
@@ -23,23 +23,21 @@ namespace <#= namespaceResult #>
         }
     }
 
-	public interface I<#= Name #>DataSource
-	{
-		Task<ViewModel?> GetData(
-            // Parameters
-			CancellationToken cancellationToken = default
-		);
-	}
-    public class <#= Name #>QueryHandler(I<#= Name #>DataSource dataSource) : IQueryHandler<<#= Name #>Query, ViewModel>
+    // Move it to infrastructure project
+    public class <#= Name #>QueryHandler(IConnectionFactory connectionFactory) : IQueryHandler<<#= Name #>Query, <#= Name #>ViewModel?>
     {
-        private readonly I<#= Name #>DataSource _dataSource = dataSource;
+        private const string _sql = """
+				SELECT *
+                FROM schema_name.table_name
+                WHERE id = @Id;
+			""";
 
-        public Task<ViewModel> Handle(
+        public async Task<<#= Name #>ViewModel?> Handle(
             <#= Name #>Query request,
             CancellationToken cancellationToken
-        ) => _dataSource.GetData(
-            // Parameters, 
-            cancellationToken
-        );
+        ){
+            using var connection = connectionFactory.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<<#= Name #>ViewModel>(_sql, new { request.Id });
+        };
     }
 }

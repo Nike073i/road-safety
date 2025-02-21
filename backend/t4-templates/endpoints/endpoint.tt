@@ -3,11 +3,11 @@
 <#@ output extension=".cs" #>
 <#@ include file="../general/namespace.tt" #>
 using ErrorOr;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RoadSafety.BuildingBlocks.Api.Endpoints;
 using Microsoft.FeatureManagement;
 using RoadSafety.BuildingBlocks.Api.FeatureManagement;
+using RoadSafety.BuildingBlocks.CommandStack.Cqrs;
 
 namespace <#= namespaceResult #>
 {
@@ -15,7 +15,7 @@ namespace <#= namespaceResult #>
 	{
 		public static Task<IResult> Handle(
 			[FromBody] <#= Name #>Request input,
-			ISender sender,
+			ICommandDispatcher dispatcher,
 			CancellationToken cancellationToken
 		) =>
 			input
@@ -23,7 +23,7 @@ namespace <#= namespaceResult #>
 				.Then(input => new <#= Name #>Command(
                     // Parameters
                 ))
-				.ThenAsync(req => sender.Send(req, cancellationToken))
+				.ThenAsync(req => dispatcher.SendCommand(req, cancellationToken))
 				.MatchResult(value =>
                     TypedResults.Ok(new <#= Name #>Response(value))
 				);
