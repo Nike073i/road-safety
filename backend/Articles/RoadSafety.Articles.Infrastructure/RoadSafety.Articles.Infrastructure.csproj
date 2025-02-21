@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\RoadSafety.BuildingBlocks.Infrastructure\RoadSafety.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\RoadSafety.Articles.QueryStack\RoadSafety.Articles.QueryStack.csproj" />
+    <ProjectReference Include="..\RoadSafety.Articles.CommandStack\RoadSafety.Articles.CommandStack.csproj" />
+    <ProjectReference Include="..\RoadSafety.Articles.Contracts\RoadSafety.Articles.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Marten" Version="7.37.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
