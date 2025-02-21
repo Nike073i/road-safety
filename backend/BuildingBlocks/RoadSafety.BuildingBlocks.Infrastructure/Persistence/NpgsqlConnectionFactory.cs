@@ -1,19 +1,12 @@
-using System.Data;
+using System.Data.Common;
 using Npgsql;
 using RoadSafety.BuildingBlocks.QueryStack.Persistance;
 
 namespace RoadSafety.BuildingBlocks.Infrastructure.Persistence
 {
-	public class NpgsqlConnectionFactory(DatabaseSettings databaseSettings) : IConnectionFactory
+	public class NpgsqlConnectionFactory(NpgsqlDataSource dataSource) : IConnectionFactory
 	{
-		private readonly DatabaseSettings _databaseSettings = databaseSettings;
-
-		public IDbConnection CreateConnection(bool open)
-		{
-			var connection = new NpgsqlConnection(_databaseSettings.СonnectionString);
-			if (open)
-				connection.Open();
-			return connection;
-		}
+		public async Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken) =>
+			await dataSource.OpenConnectionAsync(cancellationToken);
 	}
 }

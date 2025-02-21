@@ -1,12 +1,11 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using RoadSafety.BuildingBlocks.Application.Logging;
-using RoadSafety.BuildingBlocks.Application.Validation;
+using RoadSafety.BuildingBlocks.Application.Clock;
 using RoadSafety.BuildingBlocks.CommandStack.Bus;
 using RoadSafety.BuildingBlocks.Infrastructure.Bus;
 using RoadSafety.BuildingBlocks.Infrastructure.Cache;
+using RoadSafety.BuildingBlocks.Infrastructure.Cqrs;
 using RoadSafety.BuildingBlocks.Infrastructure.Persistence;
-using RoadSafety.BuildingBlocks.QueryStack.Cache;
 using RoadSafety.Users.CommandStack;
 using RoadSafety.Users.Contracts;
 using RoadSafety.Users.Infrastructure.Authentication;
@@ -34,23 +33,16 @@ namespace RoadSafety.Users.Infrastructure
 				IInfrastructureProjectMarker.Assembly
 			);
 			services.AddCaching();
-			services.AddUserWritePersistence(databaseSettings);
-			services.AddUserReadPersistence(databaseSettings);
+			services.AddUserPersistence(databaseSettings);
 			services.AddKeycloak(keycloakSettings, adminServiceAccountSetting);
-			services.AddMediatR(action =>
-			{
-				action.AddOpenBehavior(typeof(LoggingBehavior<,>));
-				action.AddOpenBehavior(typeof(ValidationBehavior<,>));
-				action.AddOpenBehavior(typeof(CachingBehavior<,>));
-				action.RegisterServicesFromAssemblies(
-					ICommandStackProjectMarker.Assembly,
-					IQueryStackProjectMarker.Assembly
-				);
-			});
+			services.AddCqrs(
+				ICommandStackProjectMarker.Assembly,
+				IQueryStackProjectMarker.Assembly
+			);
 			services.AddValidatorsFromAssemblies(
 				[ICommandStackProjectMarker.Assembly, IContractsProjectMarker.Assembly]
 			);
-
+			services.AddTransient<IDateTimeProvider, DateTimeProvider>();
 			services.AddScoped<IEventPublisher, EventPublisher>();
 
 			return services;

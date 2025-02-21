@@ -1,5 +1,6 @@
 using ErrorOr;
 using Microsoft.Extensions.Logging;
+using RoadSafety.BuildingBlocks.CommandStack.Persistence;
 using RoadSafety.BuildingBlocks.Domain;
 using RoadSafety.Users.CommandStack.Persistence;
 using RoadSafety.Users.Domain.Roles;
@@ -10,24 +11,23 @@ namespace RoadSafety.Users.CommandStack.Users.UserCreated
 {
 	public class CreateUserEventSubscriber(
 		ILogger<CreateUserEventSubscriber> logger,
-		IUserUnitOfWork unitOfWork
+		IUnitOfWork unitOfWork,
+		IUserDao userDao
 	) : IIntegrationEventSubscriber<UserCreatedIntegrationEvent>
 	{
 		private readonly Role[] _defaultRoles = [Role.User];
-		private readonly ILogger<CreateUserEventSubscriber> _logger = logger;
-		private readonly IUserUnitOfWork _unitOfWork = unitOfWork;
 
 		public Task Handle(
 			UserCreatedIntegrationEvent notification,
 			CancellationToken cancellationToken
 		) =>
 			User.Create(notification.UserId, _defaultRoles)
-				.ThenDoAsync(user => _unitOfWork.UserDao.Add(user))
-				.ThenDoAsync(_ => _unitOfWork.CommitAsync())
+				.ThenDoAsync(user => userDao.Add(user))
+				.ThenDoAsync(_ => unitOfWork.CommitAsync())
 				.Switch(
-					onValue: _ => _logger.UserInitialized(),
+					onValue: _ => logger.UserInitialized(),
 					onError: errors =>
-						_logger.InitializationError(
+						logger.InitializationError(
 							string.Join("; ", errors.SelectMany(e => e.Description))
 						)
 				);

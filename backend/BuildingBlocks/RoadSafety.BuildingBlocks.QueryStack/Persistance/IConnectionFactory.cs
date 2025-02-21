@@ -1,9 +1,9 @@
-using System.Data;
+using System.Data.Common;
 
 namespace RoadSafety.BuildingBlocks.QueryStack.Persistance
 {
 	public interface IConnectionFactory
 	{
-		IDbConnection CreateConnection(bool open = true);
+		Task<DbConnection> OpenConnectionAsync(CancellationToken cancellationToken = default);
 	}
 }

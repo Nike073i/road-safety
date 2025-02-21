@@ -1,11 +1,12 @@
 using Dapper;
+using RoadSafety.BuildingBlocks.QueryStack.Cqrs;
 using RoadSafety.BuildingBlocks.QueryStack.Persistance;
 using RoadSafety.Users.QueryStack.Users.GetUserPermissions;
 
-namespace RoadSafety.Users.Infrastructure.Users.DataSources
+namespace RoadSafety.Users.Infrastructure.Users.QueryHandlers
 {
-	internal class GetUserPermissionsDataSource(IConnectionFactory connectionFactory)
-		: IGetUserPermissionsDataSource
+	internal class GetUserPermissionsQueryHandler(IConnectionFactory connectionFactory)
+		: IQueryHandler<GetUserPermissionsQuery, UserPermissionsViewModel?>
 	{
 		private readonly IConnectionFactory _connectionFactory = connectionFactory;
 		private const string _sql = """
@@ -21,18 +22,18 @@ namespace RoadSafety.Users.Infrastructure.Users.DataSources
 					ON rp.permission_code = p.code;
 			""";
 
-		public async Task<UserPermissionsViewModel?> GetData(
-			Guid UserId,
+		public async Task<UserPermissionsViewModel?> Handle(
+			GetUserPermissionsQuery request,
 			CancellationToken cancellationToken
 		)
 		{
-			using var connection = _connectionFactory.CreateConnection();
-			var data = await connection.QueryAsync<Data>(_sql, param: new { UserId });
+			using var connection = await _connectionFactory.OpenConnectionAsync(cancellationToken);
+			var data = await connection.QueryAsync<Data>(_sql, param: new { request.UserId });
 			if (!data.Any())
 				return default;
 			var viewModel = new UserPermissionsViewModel
 			{
-				UserId = UserId,
+				UserId = request.UserId,
 				Permissions = data.Where(e => e.Code.HasValue)
 					.Select(e => new UserPermissionsViewModel.PermissionViewModel
 					{
