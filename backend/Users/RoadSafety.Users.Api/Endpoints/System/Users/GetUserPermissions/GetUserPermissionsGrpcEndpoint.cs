@@ -1,22 +1,21 @@
 using Grpc.Core;
-using MediatR;
 using RoadSafety.BuildingBlocks.Application.Auth;
+using RoadSafety.BuildingBlocks.QueryStack.Cqrs;
 using RoadSafety.Users.Contracts.System.Users.GetUserPermissions;
 using RoadSafety.Users.QueryStack.Users.GetUserPermissions;
 using static RoadSafety.Users.Api.Extensions.GrpcExtensions;
 
 namespace RoadSafety.Users.Api.Endpoints.System.Users.GetUserPermissions
 {
-	public class GetUserPermissionsGrpcEndpoint(ISender sender, IUserContext userContext)
-		: Service.ServiceBase
+	public class GetUserPermissionsGrpcEndpoint(
+		IQueryDispatcher dispatcher,
+		IUserContext userContext
+	) : Service.ServiceBase
 	{
-		private readonly ISender _sender = sender;
-		private readonly IUserContext _userContext = userContext;
-
 		public override async Task<Response> Handle(Request request, ServerCallContext context)
 		{
-			var userId = _userContext.UserInfo!.UserId;
-			var result = await _sender.Send(
+			var userId = userContext.UserInfo!.UserId;
+			var result = await dispatcher.SendQuery(
 				new GetUserPermissionsQuery(userId),
 				context.CancellationToken
 			);

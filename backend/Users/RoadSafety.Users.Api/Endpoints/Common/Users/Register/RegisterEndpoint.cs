@@ -1,7 +1,7 @@
 using ErrorOr;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RoadSafety.BuildingBlocks.Api.Endpoints;
+using RoadSafety.BuildingBlocks.CommandStack.Cqrs;
 using RoadSafety.Users.CommandStack.Users.Register;
 using RoadSafety.Users.Contracts.Common.Users.Register;
 
@@ -11,7 +11,7 @@ namespace RoadSafety.Users.Api.Endpoints.Common.Users.Register
 	{
 		public static Task<IResult> Handle(
 			[FromBody] RegisterRequest input,
-			ISender sender,
+			ICommandDispatcher dispatcher,
 			CancellationToken cancellationToken
 		) =>
 			input
@@ -23,7 +23,7 @@ namespace RoadSafety.Users.Api.Endpoints.Common.Users.Register
 					input.Email,
 					input.Password
 				))
-				.ThenAsync(req => sender.Send(req, cancellationToken))
+				.ThenAsync(req => dispatcher.SendCommand(req, cancellationToken))
 				.MatchResult(value =>
 					TypedResults.Created(string.Empty, new RegisterResponse(value))
 				);
