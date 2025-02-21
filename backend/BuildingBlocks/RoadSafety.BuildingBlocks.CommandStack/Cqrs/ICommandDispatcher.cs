@@ -1,14 +1,17 @@
+using ErrorOr;
+
 namespace RoadSafety.BuildingBlocks.CommandStack.Cqrs
 {
 	public interface ICommandDispatcher
 	{
-		Task SendCommand<TCommand>(TCommand command, CancellationToken cancellationToken = default)
-			where TCommand : ICommand;
+		Task<ErrorOr<Success>> SendCommand(
+			ICommand command,
+			CancellationToken cancellationToken = default
+		);
 
-		Task<TResult> SendCommand<TCommand, TResult>(
+		Task<ErrorOr<TResult>> SendCommand<TResult>(
 			ICommand<TResult> command,
 			CancellationToken cancellationToken = default
-		)
-			where TCommand : ICommand<TResult>;
+		);
 	}
 }

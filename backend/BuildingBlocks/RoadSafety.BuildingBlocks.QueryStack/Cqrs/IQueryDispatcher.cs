@@ -2,10 +2,9 @@ namespace RoadSafety.BuildingBlocks.QueryStack.Cqrs
 {
 	public interface IQueryDispatcher
 	{
-		Task<TResponse> SendQuery<TQuery, TResponse>(
-			TQuery query,
+		Task<TResponse> SendQuery<TResponse>(
+			IQuery<TResponse> query,
 			CancellationToken cancellationToken = default
-		)
-			where TQuery : IQuery<TResponse>;
+		);
 	}
 }
