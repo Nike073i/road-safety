@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 
 namespace RoadSafety.Users.Infrastructure.Bus.UserCreated
 {
-	internal class UserCreatedKeycloakMessageConsumerDefinition
+	public class UserCreatedKeycloakMessageConsumerDefinition
 		: ConsumerDefinition<UserCreatedKeycloakMessageConsumer>
 	{
 		public UserCreatedKeycloakMessageConsumerDefinition()

@@ -4,7 +4,7 @@ using RoadSafety.Users.IntegrationEvents;
 
 namespace RoadSafety.Users.Infrastructure.Bus.UserCreated
 {
-	internal class UserCreatedKeycloakMessageConsumer(IEventPublisher publisher)
+	public class UserCreatedKeycloakMessageConsumer(IEventPublisher publisher)
 		: IConsumer<UserCreatedKeycloakMessage>
 	{
 		private readonly IEventPublisher _publisher = publisher;
