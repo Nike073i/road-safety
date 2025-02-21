@@ -54,12 +54,13 @@ left to right direction
     User --> uc_subscribe_new_articles
     User --> uc_unsubscribe_new_articles
 
-' Модератор пользователь
+' Модератор
     actor "Модератор" as Moderator
     
     usecase "Получить список статей" as uc_moderator_get_articles
     usecase "Посмотреть детали статьи" as uc_moderator_get_article_details
     usecase "Создать статью" as uc_create_article
+    usecase "Применить изменения" as uc_update_content
     usecase "Редактировать статью" as uc_edit_arrticle
     usecase "Скрыть статью" as uc_hide_article
     usecase "Опубликовать статью" as uc_publish_article
@@ -71,6 +72,7 @@ left to right direction
 
     uc_moderator_get_articles <|- uc_moderator_get_article_details
     uc_moderator_get_article_details <|--uc_edit_arrticle
+    uc_moderator_get_article_details <|--uc_update_content
     uc_moderator_get_article_details <|--uc_hide_article
     uc_moderator_get_article_details <|--uc_publish_article
     uc_moderator_get_article_details <|--uc_remove_article
