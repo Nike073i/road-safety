@@ -32,10 +32,13 @@ dotnet_diagnostic.IDE0305.severity = silent
 dotnet_diagnostic.IDE0028.severity = silent
 dotnet_diagnostic.IDE0022.severity = suggestion
 dotnet_diagnostic.IDE0306.severity = suggestion 
+dotnet_diagnostic.IDE0046.severity = suggestion 
+dotnet_diagnostic.IDE0060.severity = suggestion 
 dotnet_diagnostic.CA5351.severity = suggestion 
 dotnet_diagnostic.CA1848.severity = suggestion 
 dotnet_diagnostic.CA2254.severity = suggestion 
 dotnet_diagnostic.CA2201.severity = suggestion 
+dotnet_diagnostic.CA1822.severity = suggestion 
 
 # Organize usings
 dotnet_separate_import_directive_groups = false
